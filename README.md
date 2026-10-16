@@ -6,6 +6,8 @@ Visitors pick a service, a day and an open time, leave a name and how they'd lik
 
 <img src="docs/widget.png" width="420" alt="The widget's second step: a calendar of open days and the morning and afternoon times for Saturday">
 
+**[Try the live demo](https://booking-widget.ebanigon-previews.workers.dev/)**: book a time at a made-up barber shop, change the colours and theme, then open the [owner inbox](https://booking-widget.ebanigon-previews.workers.dev/admin/?site=demo) with the key `ridgeline-demo` to confirm your own booking. Demo requests are cleared every day.
+
 ## Embed it
 
 ```html
