@@ -48,7 +48,7 @@ img, svg { display: block; max-width: 100%; }
 h1, h2, h3, dt, legend, strong { color: var(--ink); }
 ::selection { background: var(--accent); color: var(--on-accent); }
 a { color: var(--accent-ink); text-underline-offset: 3px; }
-a:not(.btn):hover { color: var(--ink); }
+a:not(.btn, .skip):hover { color: var(--ink); }
 :focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; border-radius: 4px; }
 code, pre { font-family: ui-monospace, "Cascadia Code", "SF Mono", Consolas, monospace; font-size: .875em; }
 .visually-hidden { position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
