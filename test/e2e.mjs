@@ -108,6 +108,8 @@ async function apiChecks() {
   ok(blocked.status === 404, 'unknown sites return 404');
   const page404 = await fetch(`${BASE}/no-such-page`);
   ok(page404.status === 404 && /text\/html/.test(page404.headers.get('content-type')), 'unknown pages show the HTML 404 page');
+  const widgetCache = (await fetch(`${BASE}/widget.js`)).headers.get('cache-control') || '';
+  ok(/must-revalidate/.test(widgetCache) && !/stale-while-revalidate/.test(widgetCache), 'browsers check for a new widget.js on every load', widgetCache);
 
   // The daily job clears demo requests older than a day.
   sql("INSERT INTO requests (id, site, kind, name, contact_via, email, message, status, created_at) VALUES ('OLD-OLD', 'demo', 'enquiry', 'Old', 'email', 'o@example.com', 'old one', 'new', '2020-01-01T00:00:00Z')");
@@ -290,6 +292,12 @@ async function variants(page) {
   b = await bgState();
   ok(b.bg !== '#b91c1c' && b.note.includes('moves to'), 'a red that can\'t hold clear text is deepened, and the note says so', JSON.stringify(b));
   await audit(page, 'custom red background');
+  // Some colour pickers only fire change when they close.
+  await page.$eval('#bg-picker', (el) => { el.value = '#1e3a8a'; el.dispatchEvent(new Event('change', { bubbles: true })); });
+  await page.$eval('#accent-picker', (el) => { el.value = '#ff8800'; el.dispatchEvent(new Event('change', { bubbles: true })); });
+  b = await bgState();
+  ok(b.background === '#1e3a8a' && b.bg === '#1e3a8a' && b.siteBg === '#1e3a8a' && b.snippet.includes('accent="#ff8800"'), 'both pickers work when they only fire change', JSON.stringify(b));
+  await page.locator('#bg-hex').fill('#b91c1c');
   await page.locator('#bg-hex').fill('nope');
   await page.keyboard.press('Tab');
   ok(!(await page.$eval('#bg-hex-error', (el) => el.hidden)) && (await bgState()).background === '#b91c1c', 'a bad background hex shows an error and keeps the colour');

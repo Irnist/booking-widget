@@ -2,9 +2,11 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
 
+# Browsers check for a new widget on every load (a 304 when nothing changed). A
+# day of stale-while-revalidate kept serving an old widget after a deploy.
 /widget.js
   Access-Control-Allow-Origin: *
-  Cache-Control: public, max-age=300, stale-while-revalidate=86400
+  Cache-Control: public, max-age=0, must-revalidate
 
 /assets/fonts/*
   Cache-Control: public, max-age=31536000, immutable
