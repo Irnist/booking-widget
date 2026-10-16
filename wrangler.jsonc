@@ -19,7 +19,7 @@
       "binding": "DB",
       "database_name": "booking-widget",
       // Replace with the id `wrangler d1 create booking-widget` prints before your first deploy.
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "80a62e37-ec0c-4834-bfa0-b6ee868c673e",
       "migrations_dir": "migrations"
     }
   ],

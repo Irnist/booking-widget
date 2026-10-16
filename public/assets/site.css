@@ -200,7 +200,7 @@ h1 { font-size: clamp(2.125rem, 1.4rem + 2.8vw, 3.5rem); line-height: 1.06; lett
 .req-contact { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: .9375rem; }
 .req-contact a { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; overflow-wrap: anywhere; }
 .req-contact svg { width: 16px; height: 16px; flex: none; }
-.req-msg { margin: 4px 0 0; padding: 8px 12px; border-left: 3px solid var(--line); color: #3e3e3b; white-space: pre-line; overflow-wrap: anywhere; }
+.req-msg { margin: 4px 0 0; padding: 10px 14px; background: var(--paper); border-radius: 8px; color: #3e3e3b; white-space: pre-line; overflow-wrap: anywhere; }
 .req-meta { color: var(--muted); font-size: .8125rem; }
 .req-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .pill { display: inline-flex; align-items: center; min-height: 24px; padding: 2px 10px; border-radius: 999px; font-size: .8125rem; font-weight: 650; white-space: nowrap; }
