@@ -1,4 +1,4 @@
-# booking-widget
+# Booking-Widget
 
 Online booking for a small-business website in two lines of HTML, with a simple inbox for the owner.
 
