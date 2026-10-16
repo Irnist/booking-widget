@@ -1,0 +1,32 @@
+{
+  "id": "demo",
+  "name": "Ridgeline Barber Co.",
+  "timezone": "America/Chicago",
+  "mode": "booking",
+  "slotMinutes": 15,
+  "noticeMinutes": 60,
+  "daysAhead": 30,
+  "hours": {
+    "mon": [],
+    "tue": [["09:00", "19:00"]],
+    "wed": [["09:00", "19:00"]],
+    "thu": [["09:00", "19:00"]],
+    "fri": [["09:00", "19:00"]],
+    "sat": [["08:00", "16:00"]],
+    "sun": []
+  },
+  "closed": ["2026-11-26", "2026-12-25"],
+  "services": [
+    { "id": "classic-cut", "name": "Classic cut", "minutes": 30, "price": "$35", "description": "Scissor or clipper cut, wash and style." },
+    { "id": "skin-fade", "name": "Skin fade", "minutes": 45, "price": "$42", "description": "Fade to the skin, finished with a straight-razor line-up." },
+    { "id": "beard-trim", "name": "Beard trim", "minutes": 20, "price": "$20", "description": "Shape, line-up and hot towel." },
+    { "id": "cut-and-beard", "name": "Cut and beard", "minutes": 60, "price": "$55", "description": "Any cut plus a full beard trim." },
+    { "id": "kids-cut", "name": "Kids' cut", "minutes": 30, "price": "$25", "description": "For ages 12 and under." }
+  ],
+  "replyTime": "within 2 hours while we're open",
+  "phone": "(555) 010-0148",
+  "allowedOrigins": ["*"],
+  "adminKeyHash": "526ef581b8919ba59590c55eddf99529a132fbe5616703203928606ce9364fd6",
+  "notify": {},
+  "demo": true
+}

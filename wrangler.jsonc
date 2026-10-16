@@ -1,0 +1,29 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "booking-widget",
+  "main": "src/worker/index.js",
+  "compatibility_date": "2026-09-01",
+  // Builds public/widget.js and the site registry before every dev run and deploy.
+  "build": {
+    "command": "node scripts/build.mjs",
+    "watch_dir": ["src/widget", "src/shared", "sites"]
+  },
+  // The widget, the demo and the owner inbox are static files; /api/* falls through to the Worker.
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "booking-widget",
+      // Replace with the id `wrangler d1 create booking-widget` prints before your first deploy.
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ],
+  // Daily clean-up of the public demo's requests.
+  "triggers": { "crons": ["17 3 * * *"] },
+  "observability": { "enabled": true }
+}

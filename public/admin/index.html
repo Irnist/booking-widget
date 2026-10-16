@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Booking inbox</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#f5f4f0">
+  <link rel="icon" href="/assets/icon.svg" type="image/svg+xml">
+  <link rel="preload" href="/assets/fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/site.css">
+  <script src="/assets/admin.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="topbar">
+    <div class="wrap">
+      <a class="wordmark" href="/">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="m9 15.5 2 2 4-4.5"/></svg>
+        Booking Widget
+      </a>
+      <nav class="topnav" aria-label="Inbox">
+        <button type="button" class="btn btn-ghost btn-sm" id="signout" hidden>Sign out</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="inbox-main">
+    <div class="wrap">
+      <form class="signin" id="signin" novalidate>
+        <div>
+          <h1>Booking inbox</h1>
+          <p class="hint">See, confirm and decline the requests your website receives.</p>
+        </div>
+        <div class="field">
+          <label for="site-id">Business ID</label>
+          <input class="input" id="site-id" name="site" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+        </div>
+        <div class="field">
+          <label for="key">Inbox key</label>
+          <input class="input" id="key" name="key" type="password" autocomplete="current-password" required aria-describedby="signin-error">
+          <p class="hint">Your web designer gave you this key. Anyone with it can manage your bookings.</p>
+        </div>
+        <p class="error" id="signin-error" role="alert" hidden></p>
+        <button class="btn btn-primary" type="submit">Open inbox</button>
+        <p class="demo-hint" id="demo-hint" hidden>Trying the demo? The key is <code>ridgeline-demo</code>.
+          <button type="button" class="btn btn-ghost btn-sm" id="fill-demo" style="margin-top:8px">Fill in the demo key</button></p>
+      </form>
+
+      <section id="inbox" hidden aria-labelledby="inbox-title">
+        <div class="inbox-head">
+          <div>
+            <h1 id="inbox-title">Requests</h1>
+            <p id="inbox-sub"></p>
+          </div>
+          <div class="inbox-tools">
+            <div class="seg" role="group" aria-label="Show">
+              <label><input type="radio" name="view" value="open" checked>To handle</label>
+              <label><input type="radio" name="view" value="all">All</label>
+            </div>
+            <button type="button" class="btn btn-ghost btn-sm" id="refresh">Refresh</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="export">Download CSV</button>
+          </div>
+        </div>
+        <div id="list" aria-live="polite"></div>
+      </section>
+    </div>
+  </main>
+  <div class="toast" id="toast" role="status" hidden></div>
+</body>
+</html>
