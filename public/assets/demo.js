@@ -53,7 +53,9 @@
       showError('');
       onSet(value);
     };
+    // Some pickers only fire change, when they close; set() is cheap, so listen to both.
     picker.addEventListener('input', () => set(picker.value, 'picker'));
+    picker.addEventListener('change', () => set(picker.value, 'picker'));
     hex.addEventListener('input', () => {
       const value = normalHex(hex.value);
       if (value && hex.value.replace('#', '').length >= 6) set(value, 'hex');
