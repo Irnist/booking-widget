@@ -92,14 +92,27 @@
             </fieldset>
             <fieldset class="control">
               <legend>Brand colour</legend>
-              <div class="swatches">
-                <label class="swatch"><input type="radio" name="accent" value="#0f766e" checked><i style="background:#0f766e"></i>Teal</label>
-                <label class="swatch"><input type="radio" name="accent" value="#b91c1c"><i style="background:#b91c1c"></i>Barber red</label>
-                <label class="swatch"><input type="radio" name="accent" value="#1d4ed8"><i style="background:#1d4ed8"></i>Blue</label>
-                <label class="swatch"><input type="radio" name="accent" value="#facc15"><i style="background:#facc15"></i>Yellow</label>
-                <label class="swatch"><input type="radio" name="accent" value="custom" id="accent-custom"><input type="color" id="accent-picker" value="#7c3aed" aria-label="Pick any colour">Any colour</label>
+              <div class="dots-wrap"><div class="dots">
+                <label class="dot" title="Teal"><input type="radio" name="accent" value="#0f766e" checked><i style="background:#0f766e"></i><span class="visually-hidden">Teal</span></label>
+                <label class="dot" title="Barber red"><input type="radio" name="accent" value="#b91c1c"><i style="background:#b91c1c"></i><span class="visually-hidden">Barber red</span></label>
+                <label class="dot" title="Orange"><input type="radio" name="accent" value="#ea580c"><i style="background:#ea580c"></i><span class="visually-hidden">Orange</span></label>
+                <label class="dot" title="Yellow"><input type="radio" name="accent" value="#facc15"><i style="background:#facc15"></i><span class="visually-hidden">Yellow</span></label>
+                <label class="dot" title="Green"><input type="radio" name="accent" value="#15803d"><i style="background:#15803d"></i><span class="visually-hidden">Green</span></label>
+                <label class="dot" title="Blue"><input type="radio" name="accent" value="#1d4ed8"><i style="background:#1d4ed8"></i><span class="visually-hidden">Blue</span></label>
+                <label class="dot" title="Purple"><input type="radio" name="accent" value="#7c3aed"><i style="background:#7c3aed"></i><span class="visually-hidden">Purple</span></label>
+                <label class="dot" title="Pink"><input type="radio" name="accent" value="#db2777"><i style="background:#db2777"></i><span class="visually-hidden">Pink</span></label>
+                <label class="dot" title="Sky"><input type="radio" name="accent" value="#7dd3fc"><i style="background:#7dd3fc"></i><span class="visually-hidden">Sky</span></label>
+                <label class="dot" title="Charcoal"><input type="radio" name="accent" value="#27272a"><i style="background:#27272a"></i><span class="visually-hidden">Charcoal</span></label>
+              </div></div>
+              <div class="custom-colour">
+                <input type="color" id="accent-picker" value="#0f766e" aria-label="Choose any colour">
+                <div class="field">
+                  <label for="accent-hex">Or type a hex code</label>
+                  <input class="input" id="accent-hex" type="text" value="#0f766e" maxlength="7" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="accent-hex-error contrast-note">
+                </div>
               </div>
-              <p class="contrast-note" id="contrast-note">Light colours like yellow get dark button text, and links are darkened until they pass 4.5:1 contrast.</p>
+              <p class="error" id="accent-hex-error" hidden></p>
+              <p class="contrast-note" id="contrast-note" aria-live="polite">Buttons get white text on this colour.</p>
             </fieldset>
             <fieldset class="control">
               <legend>Theme</legend>
