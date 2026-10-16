@@ -7,7 +7,7 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "db:local": "wrangler d1 migrations apply DB --local",
-    "dev": "npm run db:local && wrangler dev",
+    "dev": "npm run db:local && wrangler dev --test-scheduled",
     "new-site": "node scripts/new-site.mjs",
     "test": "node --test test/unit/",
     "test:e2e": "node test/e2e.mjs",

@@ -43,8 +43,9 @@ export function normalizeSite(raw, file = 'site') {
     const ranges = site.hours[day] || [];
     site.hours[day] = ranges;
     for (const [open, close] of ranges) {
-      if (!isTime(open) || !isTime(close) || toMinutes(open) >= toMinutes(close)) {
-        fail(`hours.${day} has a bad range ${JSON.stringify([open, close])}; use ["09:00", "17:00"]`);
+      // "24:00" closes at midnight, so ["00:00", "24:00"] is open all day.
+      if (!isTime(open) || !(isTime(close) || close === '24:00') || toMinutes(open) >= toMinutes(close)) {
+        fail(`hours.${day} has a bad range ${JSON.stringify([open, close])}; use ["09:00", "17:00"] or ["00:00", "24:00"]`);
       }
     }
   }

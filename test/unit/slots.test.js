@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { cellsFor, isOpen, openTimes } from '../../src/shared/slots.js';
+import { normalizeSite } from '../../src/shared/site.js';
 import { zonedNow, zonedToUtc } from '../../src/shared/time.js';
 
 const site = {
@@ -45,6 +46,16 @@ test('held cells block every start time that would overlap them', () => {
   assert.ok(dates['2026-10-20'].includes('10:30'));
   assert.equal(isOpen(site, { date: '2026-10-20', time: '09:30', minutes: 60, held, now: monday8am }), false);
   assert.equal(isOpen(site, { date: '2026-10-20', time: '09:00', minutes: 60, held, now: monday8am }), true);
+});
+
+test('a day open "00:00" to "24:00" offers times right up to midnight', () => {
+  const allDay = { ...site, hours: { ...site.hours, wed: [['00:00', '24:00']] } };
+  const wed = openTimes(allDay, { minutes: 60, now: monday8am })['2026-10-21'];
+  assert.equal(wed[0], '00:00');
+  assert.equal(wed.at(-1), '23:00');
+  assert.equal(wed.length, 47);
+  assert.doesNotThrow(() => normalizeSite({ id: 'all-day', name: 'All day', timezone: 'Asia/Manila', adminKeyHash: 'a'.repeat(64), services: [{ id: 'x', name: 'X', minutes: 60 }], hours: { mon: [['00:00', '24:00']] } }));
+  assert.throws(() => normalizeSite({ id: 'bad', name: 'Bad', timezone: 'Asia/Manila', adminKeyHash: 'a'.repeat(64), services: [{ id: 'x', name: 'X', minutes: 60 }], hours: { mon: [['00:00', '24:30']] } }), /bad range/);
 });
 
 test('dates outside the bookable range are never open', () => {
