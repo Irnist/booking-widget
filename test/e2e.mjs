@@ -234,6 +234,33 @@ async function variants(page) {
   await page.locator(`${W}.bw-chip:nth-child(1)`).click();
   await audit(page, 'dark theme with a yellow accent');
   await shot(page, '1440-5-dark-yellow');
+  ok((await page.$eval('#contrast-note', (n) => n.textContent)).includes('dark text'), 'the colour note says yellow gets dark button text');
+
+  // Any colour: the hex field drives the widget, the picker and the presets
+  const accentState = () => page.evaluate(() => ({
+    widget: document.querySelector('booking-widget').getAttribute('accent'),
+    picker: document.getElementById('accent-picker').value,
+    preset: document.querySelector('input[name="accent"]:checked')?.value || null,
+    error: !document.getElementById('accent-hex-error').hidden,
+    note: document.getElementById('contrast-note').textContent,
+    snippet: document.getElementById('snippet').textContent,
+  }));
+  await page.locator('#accent-hex').fill('#E4572E');
+  let a = await accentState();
+  ok(a.widget === '#e4572e' && a.picker === '#e4572e' && a.preset === null && a.snippet.includes('accent="#e4572e"'),
+    'a typed hex code colours the widget, moves the picker and goes into the embed code', JSON.stringify(a));
+  await page.locator('#accent-hex').fill('#777777');
+  a = await accentState();
+  ok(a.note.includes('so buttons use'), 'a mid-grey that fails with both text colours is deepened, and the note says so', a.note);
+  await page.locator('#accent-hex').fill('zzz');
+  await page.keyboard.press('Tab');
+  a = await accentState();
+  ok(a.error && a.widget === '#777777', 'a bad hex code shows an error and leaves the colour alone', JSON.stringify(a));
+  await page.locator('#accent-hex').fill('0F766E');
+  await page.keyboard.press('Enter');
+  a = await accentState();
+  ok(!a.error && a.preset === '#0f766e' && a.widget === '#0f766e', 'typing a preset\'s code selects that preset', JSON.stringify(a));
+  await audit(page, 'colour controls after use');
 
   // Popup
   await page.locator('label:has(input[name="theme"][value="light"])').click();
