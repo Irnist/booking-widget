@@ -120,7 +120,11 @@ async function apiChecks() {
 const axeSource = readFileSync(join(root, 'node_modules/axe-core/axe.min.js'), 'utf8');
 
 async function audit(page, label) {
-  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  // Measure with the web font in place; the fallback is narrower and can hide an overflow.
+  const overflow = await page.evaluate(async () => {
+    await document.fonts.ready;
+    return document.documentElement.scrollWidth - window.innerWidth;
+  });
   ok(overflow <= 0, `${label}: no sideways scroll`, `page is ${overflow}px wider than the screen`);
   await page.evaluate(axeSource);
   const result = await page.evaluate(() => window.axe.run(document, { resultTypes: ['violations'] }));
