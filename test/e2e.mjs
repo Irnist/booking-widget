@@ -262,6 +262,42 @@ async function variants(page) {
   ok(!a.error && a.preset === '#0f766e' && a.widget === '#0f766e', 'typing a preset\'s code selects that preset', JSON.stringify(a));
   await audit(page, 'colour controls after use');
 
+  // Custom theme: any background colour, with the text and borders worked out from it
+  ok(await page.$eval('#theme-custom', (el) => el.hidden), 'the background picker stays hidden until Custom is chosen');
+  await page.locator('label:has(input[name="theme"][value="custom"])').click();
+  const bgState = () => page.evaluate(() => {
+    const w = document.querySelector('booking-widget');
+    const card = w.shadowRoot.querySelector('.bw');
+    return {
+      background: w.getAttribute('background'), theme: w.getAttribute('theme'), base: card.dataset.theme,
+      bg: card.style.getPropertyValue('--bw-bg'), siteBg: getComputedStyle(document.getElementById('site')).getPropertyValue('--site-bg').trim(),
+      picker: document.getElementById('bg-picker').value, note: document.getElementById('bg-note').textContent,
+      snippet: document.getElementById('snippet').textContent, shown: !document.getElementById('theme-custom').hidden,
+    };
+  });
+  let b = await bgState();
+  ok(b.shown && b.background === '#f3ede2' && b.theme === null && b.bg === '#f3ede2' && b.base === 'light'
+    && b.snippet.includes('background="#f3ede2"') && !b.snippet.includes('theme='),
+  'Custom shows the background picker, colours the widget and swaps theme for background in the embed code', JSON.stringify(b));
+  ok(b.siteBg === '#f3ede2', 'the mock site behind the widget takes the same background', b.siteBg);
+  await audit(page, 'custom cream background');
+  await page.locator('#bg-hex').fill('#221d13');
+  b = await bgState();
+  ok(b.bg === '#221d13' && b.base === 'dark' && b.picker === '#221d13' && b.note.includes('light text'), 'a dark brown background gets light text', JSON.stringify(b));
+  await audit(page, 'custom dark brown background');
+  await shot(page, '1440-5b-custom-brown');
+  await page.locator('#bg-hex').fill('#b91c1c');
+  b = await bgState();
+  ok(b.bg !== '#b91c1c' && b.note.includes('moves to'), 'a red that can\'t hold clear text is deepened, and the note says so', JSON.stringify(b));
+  await audit(page, 'custom red background');
+  await page.locator('#bg-hex').fill('nope');
+  await page.keyboard.press('Tab');
+  ok(!(await page.$eval('#bg-hex-error', (el) => el.hidden)) && (await bgState()).background === '#b91c1c', 'a bad background hex shows an error and keeps the colour');
+  await page.locator('label:has(input[name="theme"][value="dark"])').click();
+  b = await bgState();
+  ok(!b.shown && b.background === null && b.theme === 'dark' && b.base === 'dark' && b.bg === '' && b.siteBg !== '#941616',
+    'switching back to Dark drops the custom colours from the widget and the mock site', JSON.stringify(b));
+
   // Popup
   await page.locator('label:has(input[name="theme"][value="light"])').click();
   await page.locator('label:has(input[name="display"][value="popup"])').click();

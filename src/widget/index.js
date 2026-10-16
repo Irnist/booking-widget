@@ -4,18 +4,20 @@
 //   <booking-widget site="demo"></booking-widget>
 //
 // Attributes: site (required), mode="booking|enquiry", display="inline|popup",
-// accent="#0f766e", theme="light|dark|auto", heading="…" ("none" hides it),
+// accent="#0f766e", theme="light|dark|auto", background="#f3ede2" (any colour; replaces
+// theme, or set --booking-background in CSS), heading="…" ("none" hides it),
 // button-label="…" (popup), api="https://…" (defaults to where widget.js came from).
 // Any element with data-booking-open (="<site>" to pick one) opens a popup widget.
 import css from './styles.js';
 import { enter, leave, nudge } from './motion.js';
-import { fillFrom, inkOn, parseHex, textOn } from '../shared/color.js';
+import { fillFrom, inkOn, paletteFrom, parseHex, textOn } from '../shared/color.js';
 import { describeWhen, formatDate, formatMinutes, formatMonth, formatTime, timeZoneLabel } from '../shared/format.js';
 import { addDays, weekday, zonedToUtc } from '../shared/time.js';
 import { CONTACT_VIA, validateRequest } from '../shared/validate.js';
 
 const DEFAULT_ACCENT = '#0f766e';
 const BG = { light: '#ffffff', dark: '#17191e' };
+const PALETTE_KEYS = ['--bw-bg', '--bw-surface', '--bw-text', '--bw-muted', '--bw-line', '--bw-control', '--bw-danger', '--bw-danger-bg'];
 const STALE_MS = 60000;
 const API_DEFAULT = (() => {
   try { return new URL(document.currentScript.src).origin; } catch { return location.origin; }
@@ -41,7 +43,7 @@ const mix = (rgb, target, t) => `rgb(${rgb.map((v, i) => Math.round(v + (target[
 
 class BookingWidget extends HTMLElement {
   static get observedAttributes() {
-    return ['accent', 'theme', 'mode', 'display', 'heading', 'button-label'];
+    return ['accent', 'theme', 'background', 'mode', 'display', 'heading', 'button-label'];
   }
 
   constructor() {
@@ -135,11 +137,17 @@ class BookingWidget extends HTMLElement {
     if (btn) btn.textContent = this.getAttribute('button-label') || (this.booking ? 'Book an appointment' : 'Send an enquiry');
   }
 
-  /** Theme and accent tokens; the accent is adjusted until it passes contrast. */
+  /**
+   * Theme and accent tokens; the accent is adjusted until it passes contrast.
+   * A background colour replaces the light or dark theme with a palette
+   * worked out from it (paletteFrom), on the base theme its text needs.
+   */
   paint() {
-    const theme = this.theme;
-    let accent = this.getAttribute('accent') || getComputedStyle(this).getPropertyValue('--booking-accent').trim();
+    const css = getComputedStyle(this);
+    let accent = this.getAttribute('accent') || css.getPropertyValue('--booking-accent').trim();
     if (!parseHex(accent)) accent = DEFAULT_ACCENT;
+    const custom = paletteFrom(this.getAttribute('background') || css.getPropertyValue('--booking-background').trim());
+    const theme = custom ? custom.theme : this.theme;
     const fill = fillFrom(accent);
     const onFill = textOn(fill);
     const rgb = parseHex(fill);
@@ -148,12 +156,17 @@ class BookingWidget extends HTMLElement {
       '--bw-on-fill': onFill,
       // Hover moves away from the text colour, so contrast only improves.
       '--bw-fill-hover': mix(rgb, onFill === '#ffffff' ? [0, 0, 0] : [255, 255, 255], 0.12),
-      '--bw-ink': inkOn(accent, BG[theme]),
+      // On a custom palette the surface is the harder of the two backgrounds to pass.
+      '--bw-ink': inkOn(accent, custom ? custom.tokens['--bw-surface'] : BG[theme]),
       '--bw-tint': `rgb(${rgb.join(' ')} / ${theme === 'dark' ? 0.16 : 0.07})`,
     };
     for (const el of this.shell.querySelectorAll('.bw, .bw-launch, .bw-dialog')) {
       el.dataset.theme = theme;
       for (const [k, v] of Object.entries(tokens)) el.style.setProperty(k, v);
+      for (const k of PALETTE_KEYS) {
+        if (custom) el.style.setProperty(k, custom.tokens[k]);
+        else el.style.removeProperty(k);
+      }
     }
   }
 

@@ -22,6 +22,7 @@ Visitors pick a service, a day and an open time, leave a name and how they'd lik
 | `display` | `inline` | `inline` sits in the page, `popup` shows a button that opens a dialog |
 | `accent` | `#0f766e` | Any hex colour (or set `--booking-accent` in CSS). Light colours get dark button text and a darker shade for links and focus rings, until each passes 4.5:1 contrast |
 | `theme` | `light` | `light`, `dark` or `auto` (follows the visitor's setting) |
+| `background` | none | Any hex colour, in place of `theme` (or set `--booking-background` in CSS). Text, muted text, borders and errors are worked out from it to pass WCAG contrast; a colour that can't hold clear text is deepened or lightened just enough |
 | `heading` | Book an appointment | The title on the card, or `none` to hide it |
 | `button-label` | same as the heading | The popup's button |
 | `api` | where `widget.js` came from | The Worker's address, if `widget.js` is served from somewhere else |
@@ -103,7 +104,7 @@ The Worker serves the demo page, `widget.js` and the inbox as static files, and 
 ## How it works
 
 - `src/widget/` is the custom element. `index.js` renders each step and talks to the API. `styles.js` has the light and dark tokens. `motion.js` animates only transform and opacity, and does nothing when the visitor asks for reduced motion. `scripts/build.mjs` bundles it with esbuild into `public/widget.js`.
-- `src/shared/` is used by both the widget and the Worker: the time-zone maths (`time.js`, correct across daylight-saving changes), which times are open (`slots.js`), form validation (`validate.js`), accent contrast (`color.js`) and the site config check (`site.js`).
+- `src/shared/` is used by both the widget and the Worker: the time-zone maths (`time.js`, correct across daylight-saving changes), which times are open (`slots.js`), form validation (`validate.js`), accent and background contrast (`color.js`) and the site config check (`site.js`).
 - `src/worker/index.js` is the API. It checks the origin, the body size and the rate limit, re-checks that the time is open, and writes the request and its holds in one batch. `notify.js` sends the alerts.
 - `migrations/` has the D1 schema. `sites/*.json` is built into the Worker, so a change of hours is a commit and a deploy.
 
@@ -113,7 +114,7 @@ The Worker serves the demo page, `widget.js` and the inbox as static files, and 
 npm test
 ```
 
-Unit tests for open times, validation and colour contrast, including the theme tokens.
+Unit tests for open times, validation and colour contrast, including the theme tokens and palettes built from 18 background colours.
 
 ```
 npm run dev

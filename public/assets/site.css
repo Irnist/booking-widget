@@ -155,12 +155,13 @@ h1 { font-size: clamp(2.125rem, 1.4rem + 2.8vw, 3.5rem); line-height: 1.06; lett
 .custom-colour .field label { font-weight: 550; font-size: .875rem; }
 .custom-colour .input { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; text-transform: lowercase; }
 .custom-colour .input[aria-invalid="true"] { border-color: var(--danger); }
-#accent-picker { width: 48px; height: 48px; padding: 4px; border: 1px solid var(--control); border-radius: 10px; background: var(--card); cursor: pointer; }
-#accent-picker:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 1px; }
-#accent-picker::-webkit-color-swatch-wrapper { padding: 0; }
-#accent-picker::-webkit-color-swatch { border: 0; border-radius: 6px; }
-#accent-picker::-moz-color-swatch { border: 0; border-radius: 6px; }
+.custom-colour input[type="color"] { width: 48px; height: 48px; padding: 4px; border: 1px solid var(--control); border-radius: 10px; background: var(--card); cursor: pointer; }
+.custom-colour input[type="color"]:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 1px; }
+.custom-colour input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+.custom-colour input[type="color"]::-webkit-color-swatch { border: 0; border-radius: 6px; }
+.custom-colour input[type="color"]::-moz-color-swatch { border: 0; border-radius: 6px; }
 .contrast-note { margin: 0; font-size: .875rem; color: var(--muted); }
+.theme-custom { display: grid; gap: 8px; margin-top: 4px; }
 
 .code { position: relative; margin-top: 24px; border-radius: 12px; background: var(--code); color: #e8e8e3; border: 1px solid var(--line); }
 .code-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 8px 8px 16px; border-bottom: 1px solid var(--line); }

@@ -125,6 +125,18 @@
               <div class="seg">
                 <label><input type="radio" name="theme" value="light" checked>Light</label>
                 <label><input type="radio" name="theme" value="dark">Dark</label>
+                <label><input type="radio" name="theme" value="custom">Custom</label>
+              </div>
+              <div class="theme-custom" id="theme-custom" hidden>
+                <div class="custom-colour">
+                  <input type="color" id="bg-picker" value="#f3ede2" aria-label="Choose any background colour">
+                  <div class="field">
+                    <label for="bg-hex">Background hex code</label>
+                    <input class="input" id="bg-hex" type="text" value="#f3ede2" maxlength="7" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="bg-hex-error bg-note">
+                  </div>
+                </div>
+                <p class="error" id="bg-hex-error" hidden></p>
+                <p class="contrast-note" id="bg-note" aria-live="polite"></p>
               </div>
             </fieldset>
           </form>
@@ -153,7 +165,7 @@
         <dl class="features">
           <div class="feature"><dt>No double bookings</dt><dd>Every slot a booking covers is a row with a unique key in the database. If two people send the same time at once, one request saves and the other is asked to pick again.</dd></div>
           <div class="feature"><dt>The owner stays in charge</dt><dd>Requests hold the time and wait in an inbox to be confirmed or declined. Alerts go to Telegram, Discord, Slack or email, with the customer's number one tap away.</dd></div>
-          <div class="feature"><dt>Any brand colour, still readable</dt><dd>Give it the business's colour and it works out readable button text and darkens links until they pass WCAG contrast, in light and dark themes.</dd></div>
+          <div class="feature"><dt>Any brand colour, still readable</dt><dd>Give it the business's colour and it works out readable button text and darkens links until they pass WCAG contrast. Give it the site's background too, and the text and borders are worked out to match.</dd></div>
           <div class="feature"><dt>Real opening hours</dt><dd>Lunch breaks, closed days, holidays, notice time and services of different lengths. Hours are kept in the business's time zone, and visitors elsewhere are told which one.</dd></div>
           <div class="feature"><dt>Spam stays out, without a puzzle</dt><dd>A hidden honeypot field, a check on how fast the form was filled in, and a limit per visitor per hour. No CAPTCHA for real customers to solve.</dd></div>
           <div class="feature"><dt>Works for every visitor</dt><dd>Real labels, errors beside the field they belong to, a calendar you can drive with arrow keys, 44px tap targets, and no motion for people who turn it off.</dd></div>
